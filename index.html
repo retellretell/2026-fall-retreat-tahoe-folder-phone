@@ -94,40 +94,79 @@
     .phone{
       width:100%;max-width:390px;margin:auto;
       position:relative;
-      filter:drop-shadow(var(--shadow));
+    }
+
+    /* The OPEN phone is one physical object. The two halves sit inside one shared shell. */
+    .open-phone{
+      position:relative;
+      width:100%;
+      padding:10px 10px 12px;
+      border-radius:42px 42px 48px 48px;
+      background:linear-gradient(180deg,#ffffff 0%,#edf9ff 28%,#d8f1ff 100%);
+      border:2px solid #c4e6f5;
+      box-shadow:
+        inset 0 0 0 3px rgba(255,255,255,.78),
+        0 26px 80px rgba(86,154,191,.20);
+      overflow:hidden;
+    }
+
+    .open-phone::before{
+      content:"";
+      position:absolute;
+      inset:7px;
+      border-radius:35px 35px 41px 41px;
+      border:1px solid rgba(117,184,218,.22);
+      pointer-events:none;
+      z-index:0;
     }
 
     .top-half,.bottom-half{
-      position:relative;overflow:hidden;
-      background:linear-gradient(180deg,#fff 0%,#eef9ff 28%,#d7f0ff 100%);
-      border:2px solid #c7e7f6;
-      box-shadow:inset 0 0 0 3px rgba(255,255,255,.72);
-    }
-    .top-half{
-      border-radius:38px 38px 20px 20px;
-      padding:16px 14px 14px;
-    }
-    .bottom-half{
-      margin-top:-2px;
-      border-radius:18px 18px 44px 44px;
-      padding:17px 14px 20px;
+      position:relative;
+      z-index:1;
+      overflow:visible;
+      background:transparent;
+      border:0;
+      box-shadow:none;
     }
 
-    .top-half::before,.bottom-half::before{
-      content:"";
-      position:absolute;inset:8px;
-      border:1px solid rgba(117,184,218,.22);
-      pointer-events:none;
+    .top-half{
+      border-radius:30px 30px 8px 8px;
+      padding:7px 4px 9px;
     }
-    .top-half::before{border-radius:30px 30px 14px 14px}
-    .bottom-half::before{border-radius:14px 14px 36px 36px}
+
+    .bottom-half{
+      margin-top:0;
+      border-radius:8px 8px 34px 34px;
+      padding:12px 4px 8px;
+    }
+
+    .top-half::before,.bottom-half::before{display:none}
 
     .camera-bar{
+      display:block;
       width:64px;height:8px;border-radius:999px;
       margin:0 auto 11px;
+      padding:0;border:0;
       background:#91cae5;
       box-shadow:inset 0 2px 3px rgba(76,132,161,.22);
       opacity:.78;
+      cursor:pointer;
+      transition:transform .16s ease, opacity .16s ease;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .camera-bar:active{transform:scale(.92);opacity:1}
+    .camera-bar:focus-visible{outline:3px solid rgba(92,166,207,.28);outline-offset:5px}
+
+    .playlist-link{
+      color:inherit;
+      text-decoration:none;
+      border-bottom:1px dashed rgba(76,131,166,.36);
+      transition:color .15s ease,border-color .15s ease;
+    }
+    .playlist-link:hover,.playlist-link:focus-visible{
+      color:#2f79a5;
+      border-color:#2f79a5;
+      outline:none;
     }
 
     .lcd{
@@ -219,15 +258,33 @@
     }
 
     .hinge{
-      width:90px;height:18px;margin:0 auto;
-      border-radius:14px;
-      background:linear-gradient(180deg,#d2eefc,#b4def3);
-      border-left:2px solid #b7e1f3;border-right:2px solid #b7e1f3;
+      width:calc(100% - 10px);
+      height:20px;
+      margin:0 auto;
       position:relative;
+      border-top:1px solid rgba(111,174,206,.24);
+      border-bottom:1px solid rgba(255,255,255,.72);
     }
+
     .hinge::before{
-      content:"";position:absolute;left:50%;top:4px;transform:translateX(-50%);
-      width:54px;height:8px;border-radius:999px;background:#90c8e3;opacity:.7;
+      content:"";
+      position:absolute;
+      left:50%;top:3px;transform:translateX(-50%);
+      width:88px;height:13px;
+      border-radius:999px;
+      background:linear-gradient(180deg,#cdeafa,#a9d8ee);
+      border:1px solid #abd9ee;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.65);
+    }
+
+    .hinge::after{
+      content:"";
+      position:absolute;
+      left:50%;top:7px;transform:translateX(-50%);
+      width:52px;height:5px;
+      border-radius:999px;
+      background:#89c4df;
+      opacity:.72;
     }
 
     .nav-area{
@@ -300,9 +357,380 @@
 
     .chin{width:56px;height:5px;margin:14px auto 0;border-radius:999px;background:#acd6e9;opacity:.72}
 
+
+    .open-phone{
+      transform-origin:50% 48%;
+      animation:openPhone .36s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .closed-face{
+      display:none;
+      position:relative;
+      width:78%;
+      max-width:304px;
+      min-height:430px;
+      margin:0 auto;
+      padding:24px 18px 20px;
+      border:2px solid #c7e7f6;
+      border-radius:46px 46px 58px 58px;
+      background:
+        radial-gradient(circle at 50% 8%,rgba(255,255,255,.96) 0 8%,transparent 20%),
+        linear-gradient(180deg,#ffffff 0%,#eef9ff 30%,#d5effd 100%);
+      box-shadow:
+        inset 0 0 0 3px rgba(255,255,255,.75),
+        0 26px 80px rgba(82,151,190,.22);
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+      animation:closePhone .36s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .closed-face::before{
+      content:"";
+      position:absolute;
+      inset:9px;
+      border:1px solid rgba(117,184,218,.24);
+      border-radius:37px 37px 49px 49px;
+      pointer-events:none;
+    }
+
+    .phone.closed .open-phone{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:-1}
+    .phone.closed .closed-face{display:block}
+
+    @keyframes closePhone{
+      from{opacity:0;transform:scale(.82) translateY(24px)}
+      to{opacity:1;transform:scale(1) translateY(0)}
+    }
+    @keyframes openPhone{
+      from{opacity:0;transform:scale(.88) translateY(14px)}
+      to{opacity:1;transform:scale(1) translateY(0)}
+    }
+
+    .front-camera{
+      width:18px;height:18px;border-radius:50%;
+      margin:0 auto 14px;
+      background:
+        radial-gradient(circle at 38% 36%,#dff7ff 0 2px,#6faecf 3px 5px,#315d76 6px 8px,#9dd7ef 9px 100%);
+      border:2px solid #d7effa;
+      box-shadow:0 2px 8px rgba(60,117,149,.18);
+      position:relative;z-index:1;
+    }
+
+    .front-brand{
+      position:relative;z-index:1;
+      text-align:center;
+      margin-bottom:13px;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.24em;
+      color:#8ab9d0;
+    }
+
+    .outer-window{
+      position:relative;
+      z-index:1;
+      width:100%;
+      padding:10px;
+      border-radius:20px;
+      background:linear-gradient(180deg,#addcf2,#dff4ff);
+      border:2px solid #9fcfe7;
+      box-shadow:
+        inset 0 0 0 2px rgba(255,255,255,.76),
+        0 5px 0 rgba(82,151,190,.10);
+    }
+
+    #outerDisplay{
+      display:block;
+      width:100%;
+      aspect-ratio:2.7/1;
+      border-radius:11px;
+      background:#244d67;
+      border:2px solid #77abc5;
+      image-rendering:pixelated;
+      image-rendering:crisp-edges;
+      box-shadow:inset 0 0 12px rgba(0,0,0,.28);
+    }
+
+    .front-status{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      margin-top:7px;
+      font-family:"Courier New",monospace;
+      font-size:9px;
+      font-weight:900;
+      color:#6396b2;
+    }
+
+    .front-control-panel{
+      position:relative;z-index:2;
+      margin:17px auto 8px;
+      padding:11px 12px 12px;
+      border-radius:24px;
+      background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(222,244,254,.72));
+      border:1px solid #b9deef;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.95),
+        0 4px 0 rgba(89,149,180,.10);
+    }
+
+    .front-volume-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:0 3px 7px;
+    }
+
+    .front-volume-label{
+      font-family:"Courier New",monospace;
+      font-size:8px;
+      letter-spacing:.08em;
+      font-weight:900;
+      color:#77a5bd;
+    }
+
+    .front-controls{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      align-items:center;
+    }
+
+    .front-control{
+      min-width:0;
+      height:42px;
+      border-radius:16px;
+      border:1px solid #b7ddec;
+      background:linear-gradient(180deg,#fff,#e8f8ff);
+      color:#5e95b5;
+      font-size:14px;
+      font-weight:950;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.95),
+        0 3px 0 rgba(89,149,180,.15);
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .front-control.main{
+      height:50px;
+      border-radius:18px;
+      background:linear-gradient(180deg,#fff7fc,#ffdced);
+      border-color:#f0c4d8;
+      color:#d37da7;
+      font-size:17px;
+    }
+
+    .front-control.volume{
+      width:34px;
+      height:28px;
+      border-radius:12px;
+      font-size:15px;
+      padding:0;
+    }
+
+    .front-control:active{transform:translateY(2px);box-shadow:none}
+    .front-control:focus-visible{outline:3px solid rgba(92,166,207,.28);outline-offset:3px}
+
+    .front-sparkles{
+      position:relative;z-index:1;
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      margin-top:18px;
+      color:#87bdd8;
+      font-size:12px;
+      letter-spacing:.14em;
+    }
+
+    .front-open-hint{
+      position:relative;z-index:1;
+      margin-top:12px;
+      text-align:center;
+      font-size:9px;
+      font-weight:850;
+      letter-spacing:.16em;
+      color:#8bb5ca;
+    }
+
+
+    /* 3-second incoming call intro shown before the MP3 screen */
+    .incoming-call{
+      position:absolute;
+      inset:0;
+      z-index:20;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 14px 12px;
+      background:
+        radial-gradient(circle at 50% 30%,rgba(255,255,255,.92) 0 12%,transparent 34%),
+        linear-gradient(180deg,#d8f2ff 0%,#eefaff 58%,#fdfcff 100%);
+      color:#4f84a5;
+      opacity:1;
+      transform:scale(1);
+      transition:opacity .42s ease,transform .42s ease;
+    }
+
+    .incoming-call.is-leaving{
+      opacity:0;
+      transform:scale(.985);
+      pointer-events:none;
+    }
+
+    .incoming-top{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-family:"Courier New",monospace;
+      font-size:9px;
+      font-weight:900;
+      letter-spacing:.08em;
+      color:#75a8c3;
+    }
+
+    .incoming-main{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      flex:1;
+      width:100%;
+      padding:10px 0 8px;
+      text-align:center;
+    }
+
+    .incoming-icon{
+      position:relative;
+      width:58px;
+      height:58px;
+      margin-bottom:12px;
+      border-radius:18px;
+      background:linear-gradient(180deg,#ffffff,#dff5ff);
+      border:2px solid #a9d7ec;
+      box-shadow:0 5px 0 rgba(92,157,191,.10);
+      display:grid;
+      place-items:center;
+      animation:callPulse .8s ease-in-out infinite;
+    }
+
+    .incoming-icon::before,
+    .incoming-icon::after{
+      content:"";
+      position:absolute;
+      background:#79b9d9;
+      border-radius:1px;
+    }
+
+    .incoming-icon::before{width:7px;height:30px}
+    .incoming-icon::after{width:30px;height:7px}
+
+    .incoming-label{
+      margin:0 0 8px;
+      font-family:"Courier New",monospace;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.08em;
+      color:#75a9c5;
+    }
+
+    .incoming-name{
+      margin:0;
+      font-size:34px;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:-.055em;
+      color:#447e9f;
+    }
+
+    .incoming-number{
+      margin:9px 0 0;
+      font-family:"Courier New",monospace;
+      font-size:14px;
+      font-weight:900;
+      letter-spacing:.04em;
+      color:#719fba;
+    }
+
+    .incoming-rings{
+      display:flex;
+      gap:5px;
+      margin-top:14px;
+      height:8px;
+      align-items:flex-end;
+    }
+
+    .incoming-rings i{
+      display:block;
+      width:5px;
+      border-radius:1px;
+      background:#8cc8e5;
+      animation:ringBars .75s ease-in-out infinite;
+    }
+    .incoming-rings i:nth-child(1){height:4px}
+    .incoming-rings i:nth-child(2){height:7px;animation-delay:.12s}
+    .incoming-rings i:nth-child(3){height:5px;animation-delay:.24s}
+    .incoming-rings i:nth-child(4){height:8px;animation-delay:.36s}
+    .incoming-rings i:nth-child(5){height:4px;animation-delay:.48s}
+
+    .incoming-actions{
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+
+    .call-action{
+      min-height:38px;
+      border-radius:15px;
+      border:1px solid #b9deef;
+      background:linear-gradient(180deg,#fff,#eaf8ff);
+      color:#6598b5;
+      font-size:10px;
+      font-weight:900;
+      letter-spacing:.04em;
+      box-shadow:0 3px 0 rgba(103,164,194,.14);
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .call-action.answer{
+      background:linear-gradient(180deg,#edfaff,#ccefff);
+      border-color:#a9d9ef;
+      color:#3f83aa;
+    }
+
+    .call-action:active{
+      transform:translateY(2px);
+      box-shadow:none;
+    }
+
+    .phone.calling .top-half{
+      animation:phoneRing .42s ease-in-out infinite alternate;
+      transform-origin:50% 80%;
+    }
+
+    @keyframes callPulse{
+      0%,100%{transform:scale(1)}
+      50%{transform:scale(1.045)}
+    }
+
+    @keyframes ringBars{
+      0%,100%{opacity:.45;transform:scaleY(.65)}
+      50%{opacity:1;transform:scaleY(1)}
+    }
+
+    @keyframes phoneRing{
+      from{transform:rotate(-.45deg)}
+      to{transform:rotate(.45deg)}
+    }
+
     @media(max-width:390px){
-      .top-half{padding:14px 12px 12px;border-radius:32px 32px 18px 18px}
-      .bottom-half{padding:16px 12px 18px;border-radius:16px 16px 38px 38px}
+      .open-phone{padding:9px 9px 11px;border-radius:36px 36px 42px 42px}
+      .open-phone::before{border-radius:30px 30px 36px 36px}
+      .top-half{padding:6px 3px 8px;border-radius:26px 26px 7px 7px}
+      .bottom-half{padding:11px 3px 7px;border-radius:7px 7px 30px 30px}
       .nav-area{grid-template-columns:1fr 80px 1fr}
       .dpad{width:80px;height:80px}
       .pad-up{left:30px}.pad-down{left:30px}
@@ -326,11 +754,34 @@
         <p class="sub">청년부 가을수련회 플레이리스트</p>
       </header>
 
-      <div class="phone">
+      <div class="phone" id="flipPhone">
+        <div class="open-phone">
         <div class="top-half">
-          <div class="camera-bar"></div>
+          <button class="camera-bar" id="foldToggle" type="button" aria-label="폴더폰 닫기" aria-expanded="true"></button>
 
           <div class="lcd">
+            <div class="incoming-call" id="incomingCall" role="status" aria-live="polite">
+              <div class="incoming-top">
+                <span>INCOMING</span>
+                <span>♪ RING</span>
+              </div>
+
+              <div class="incoming-main">
+                <div class="incoming-icon" aria-hidden="true"></div>
+                <p class="incoming-label">Incoming call...</p>
+                <p class="incoming-name">Jesus</p>
+                <p class="incoming-number">904-906-2026</p>
+                <div class="incoming-rings" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i>
+                </div>
+              </div>
+
+              <div class="incoming-actions">
+                <button class="call-action" id="noRejectBtn" type="button">No Reject</button>
+                <button class="call-action answer" id="answerBtn" type="button">Answer</button>
+              </div>
+            </div>
+
             <div class="statusbar">
               <span>MP3 · TAHOE</span>
               <div class="status-icons">
@@ -359,7 +810,7 @@
               </svg>
 
               <div class="mp3-copy">
-                <strong>RETREAT PLAYLIST</strong>
+                <strong><a class="playlist-link" href="https://music.youtube.com/playlist?list=PLHEHHRGrwrkg" target="_blank" rel="noopener noreferrer">RETREAT PLAYLIST</a></strong>
                 <span id="trackLabel">PLAYER READY</span>
               </div>
               <div class="track-count" id="trackCount">--/--</div>
@@ -420,6 +871,38 @@
 
           <div class="chin"></div>
         </div>
+        </div>
+
+        <div class="closed-face" id="closedFace" role="button" tabindex="0" aria-label="폴더폰 열기">
+          <div class="front-camera" aria-hidden="true"></div>
+          <div class="front-brand">YOUTH MOBILE</div>
+
+          <div class="outer-window">
+            <canvas id="outerDisplay" width="240" height="88" aria-label="현재 재생 중인 곡을 보여주는 도트 매트릭스 외부 화면"></canvas>
+            <div class="front-status">
+              <span id="frontTrack">TRACK --</span>
+              <span id="frontState">READY</span>
+              <span id="frontVol">VOL 50</span>
+            </div>
+          </div>
+
+          <div class="front-control-panel" aria-label="닫힌 상태 MP3 조작">
+            <div class="front-volume-row">
+              <button class="front-control volume" id="frontVolDown" type="button" aria-label="볼륨 내리기">−</button>
+              <span class="front-volume-label">MP3 CONTROL</span>
+              <button class="front-control volume" id="frontVolUp" type="button" aria-label="볼륨 올리기">＋</button>
+            </div>
+
+            <div class="front-controls">
+              <button class="front-control" id="frontPrev" type="button" aria-label="이전 곡">◀</button>
+              <button class="front-control main" id="frontPlay" type="button" aria-label="재생 또는 일시정지">▶</button>
+              <button class="front-control" id="frontNext" type="button" aria-label="다음 곡">▶</button>
+            </div>
+          </div>
+
+          <div class="front-sparkles" aria-hidden="true">✦ ♡ ✦</div>
+          <div class="front-open-hint">TAP BODY TO OPEN · BUTTONS WORK CLOSED</div>
+        </div>
       </div>
     </section>
   </main>
@@ -431,6 +914,44 @@
     let progressTimer = null;
 
     const $ = (id) => document.getElementById(id);
+
+    const incomingCall = $('incomingCall');
+    const answerBtn = $('answerBtn');
+    const noRejectBtn = $('noRejectBtn');
+    const flipPhoneEl = $('flipPhone');
+    let incomingTimer = null;
+    let incomingFinished = false;
+
+    function finishIncomingCall() {
+      if (incomingFinished) return;
+      incomingFinished = true;
+      if (incomingTimer) clearTimeout(incomingTimer);
+
+      incomingCall.classList.add('is-leaving');
+      flipPhoneEl.classList.remove('calling');
+
+      setTimeout(() => {
+        incomingCall.hidden = true;
+      }, 430);
+    }
+
+    // Show the incoming-call screen first, then reveal the MP3 player automatically.
+    flipPhoneEl.classList.add('calling');
+    incomingTimer = setTimeout(finishIncomingCall, 3000);
+
+    // Answer skips the remaining intro time.
+    answerBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      tapFeedback();
+      finishIncomingCall();
+    });
+
+    // "No Reject" is intentionally non-rejecting; it only gives button feedback.
+    noRejectBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      tapFeedback();
+    });
+
 
     function formatTime(seconds) {
       if (!Number.isFinite(seconds) || seconds < 0) return '00:00';
@@ -455,11 +976,14 @@
       } catch (_) {}
 
       if (index >= 0 && list.length) {
+        const idxLabel = String(index + 1).padStart(2,'0');
         $('trackCount').textContent =
-          String(index + 1).padStart(2,'0') + '/' + String(list.length).padStart(2,'0');
-        $('trackLabel').textContent = 'TRACK ' + String(index + 1).padStart(2,'0');
+          idxLabel + '/' + String(list.length).padStart(2,'0');
+        $('trackLabel').textContent = 'TRACK ' + idxLabel;
+        $('frontTrack').textContent = 'TRACK ' + idxLabel;
       } else {
         $('trackCount').textContent = '--/--';
+        $('frontTrack').textContent = 'TRACK --';
       }
 
       try {
@@ -472,14 +996,19 @@
           [3]:'LOADING',
           [5]:'CUED'
         };
-        $('playState').textContent = labels[state] || 'READY';
+        const stateLabel = labels[state] || 'READY';
+        $('playState').textContent = stateLabel;
+        $('frontState').textContent = stateLabel;
         $('playPad').textContent = state === 1 ? 'PAUSE' : 'PLAY';
+        $('frontPlay').textContent = state === 1 ? 'Ⅱ' : '▶';
         $('key5').querySelector('small').textContent = state === 1 ? 'PAUSE' : 'PLAY';
       } catch (_) {}
 
       try {
         const volume = player.getVolume();
-        $('volumeLabel').textContent = 'VOL ' + Math.round(volume);
+        const volLabel = 'VOL ' + Math.round(volume);
+        $('volumeLabel').textContent = volLabel;
+        $('frontVol').textContent = volLabel;
       } catch (_) {}
     }
 
@@ -527,6 +1056,163 @@
       updateMeta();
     }
 
+
+    const flipPhone = $('flipPhone');
+    const foldToggle = $('foldToggle');
+    const closedFace = $('closedFace');
+
+    function setFolded(folded) {
+      tapFeedback();
+      flipPhone.classList.toggle('closed', folded);
+      foldToggle.setAttribute('aria-expanded', folded ? 'false' : 'true');
+    }
+
+    foldToggle.addEventListener('click', () => setFolded(true));
+
+    closedFace.addEventListener('click', (event) => {
+      if (event.target.closest('.front-control')) return;
+      setFolded(false);
+    });
+
+    closedFace.addEventListener('keydown', (event) => {
+      if (event.target.closest('.front-control')) return;
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        setFolded(false);
+      }
+    });
+
+    // Lollipop-style outer dot-matrix display.
+    const outerCanvas = $('outerDisplay');
+    const outerCtx = outerCanvas.getContext('2d');
+    let marqueeX = outerCanvas.width;
+    let outerTick = 0;
+    let lastOuterVideoId = '';
+
+    function drawDotGrid() {
+      outerCtx.fillStyle = '#244d67';
+      outerCtx.fillRect(0, 0, outerCanvas.width, outerCanvas.height);
+
+      outerCtx.fillStyle = 'rgba(129, 205, 232, .12)';
+      for (let y = 4; y < outerCanvas.height; y += 5) {
+        for (let x = 4; x < outerCanvas.width; x += 5) {
+          outerCtx.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+
+    function drawPixelSheep(x, y, bob) {
+      const px = 3;
+      const c = {
+        wool:'#dff7ff',
+        face:'#ffd7c4',
+        dark:'#9de2f5',
+        eye:'#72bad1',
+        blush:'#ff9fc8'
+      };
+      const rect = (dx,dy,w,h,color) => {
+        outerCtx.fillStyle = color;
+        outerCtx.fillRect(x + dx*px, y + (dy+bob)*px, w*px, h*px);
+      };
+
+      rect(3,0,4,2,c.wool);
+      rect(1,2,8,5,c.wool);
+      rect(0,3,2,4,c.wool);
+      rect(8,3,2,4,c.wool);
+      rect(3,3,4,3,c.face);
+      rect(2,4,1,2,c.face);
+      rect(7,4,1,2,c.face);
+      rect(4,4,1,1,c.eye);
+      rect(6,4,1,1,c.eye);
+      rect(5,5,1,1,c.dark);
+      rect(3,6,1,1,c.blush);
+      rect(7,6,1,1,c.blush);
+      rect(2,7,2,1,c.face);
+      rect(6,7,2,1,c.face);
+    }
+
+    function getOuterSongInfo() {
+      let title = 'RETREAT PLAYLIST';
+      let author = 'TAHOE 2026';
+      let state = 'READY';
+      let idx = '--';
+      let total = '--';
+      let videoId = '';
+
+      try {
+        if (ready && player) {
+          const data = player.getVideoData ? (player.getVideoData() || {}) : {};
+          if (data.title) title = data.title;
+          if (data.author) author = data.author;
+          if (data.video_id) videoId = data.video_id;
+
+          const s = player.getPlayerState();
+          state = s === 1 ? 'PLAY' : (s === 2 ? 'PAUSE' : (s === 3 ? 'LOAD' : 'READY'));
+
+          const i = player.getPlaylistIndex();
+          const list = player.getPlaylist ? (player.getPlaylist() || []) : [];
+          if (i >= 0) idx = String(i + 1).padStart(2,'0');
+          if (list.length) total = String(list.length).padStart(2,'0');
+        }
+      } catch (_) {}
+
+      // Start the marquee from the right whenever the song changes.
+      if (videoId && videoId !== lastOuterVideoId) {
+        lastOuterVideoId = videoId;
+        marqueeX = outerCanvas.width;
+      }
+
+      return { title, author, state, idx, total };
+    }
+
+    function drawOuterDisplay() {
+      drawDotGrid();
+
+      const bob = Math.round(Math.sin(outerTick / 14) * .45);
+      drawPixelSheep(8, 24, bob);
+
+      const info = getOuterSongInfo();
+
+      // Current song title: large scrolling marquee.
+      outerCtx.save();
+      outerCtx.beginPath();
+      outerCtx.rect(48, 10, outerCanvas.width - 54, 42);
+      outerCtx.clip();
+
+      outerCtx.fillStyle = '#d8f8ff';
+      outerCtx.font = 'bold 14px "Apple SD Gothic Neo","Malgun Gothic",sans-serif';
+      outerCtx.textBaseline = 'middle';
+      const titleMessage = `♪ ${info.title}   `;
+      const titleWidth = outerCtx.measureText(titleMessage).width;
+      outerCtx.fillText(titleMessage, marqueeX, 31);
+      outerCtx.restore();
+
+      // Artist/channel + track/state: second line, also readable while the title scrolls.
+      outerCtx.save();
+      outerCtx.beginPath();
+      outerCtx.rect(48, 49, outerCanvas.width - 54, 30);
+      outerCtx.clip();
+      outerCtx.fillStyle = '#78d6ef';
+      outerCtx.font = 'bold 9px "Courier New",monospace';
+      outerCtx.textBaseline = 'middle';
+      const sub = `${info.author}  ·  ${info.idx}/${info.total}  ·  ${info.state}`;
+      outerCtx.fillText(sub, 51, 64);
+      outerCtx.restore();
+
+      outerCtx.fillStyle = '#77d5ef';
+      outerCtx.fillRect(49, 8, 4, 4);
+      outerCtx.fillRect(57, 4, 3, 3);
+      outerCtx.fillStyle = '#ff9fcb';
+      outerCtx.fillRect(221, 8, 4, 4);
+      outerCtx.fillRect(225, 12, 4, 4);
+
+      marqueeX -= .70;
+      if (marqueeX < 48 - titleWidth) marqueeX = outerCanvas.width;
+      outerTick += 1;
+      requestAnimationFrame(drawOuterDisplay);
+    }
+    drawOuterDisplay();
+
     window.onYouTubeIframeAPIReady = function() {
       player = new YT.Player('yt-player', {
         width: '100%',
@@ -567,11 +1253,16 @@
 
     [
       ['playPad', togglePlay],
+      ['frontPlay', togglePlay],
+      ['frontVolUp', () => changeVolume(10)],
+      ['frontVolDown', () => changeVolume(-10)],
       ['key5', togglePlay],
       ['nextPad', nextTrack],
+      ['frontNext', nextTrack],
       ['nextSoft', nextTrack],
       ['key6', nextTrack],
       ['prevPad', prevTrack],
+      ['frontPrev', prevTrack],
       ['prevSoft', prevTrack],
       ['key4', prevTrack],
       ['volUp', () => changeVolume(10)],
@@ -582,6 +1273,7 @@
 
     window.addEventListener('beforeunload', () => {
       if (progressTimer) clearInterval(progressTimer);
+      if (incomingTimer) clearTimeout(incomingTimer);
     });
   </script>
 </body>
